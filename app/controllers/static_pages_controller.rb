@@ -1,7 +1,7 @@
 class StaticPagesController < ApplicationController
 
-  
   # 首页
+
   def home
   end
 
