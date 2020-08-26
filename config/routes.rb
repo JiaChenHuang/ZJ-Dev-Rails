@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  root 'static_pages#home'
-  # get 'static_pages/home'
-  get 'static_pages/help'
-  get 'static_pages/about'
-  get 'static_pages/contact'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get 'users/new'
+  root 'static_pages#home'  #首页
+  get '/help', to: 'static_pages#help'  #帮助
+  get '/about', to: 'static_pages#about'  #关于
+  get '/contact', to: 'static_pages#contact'  #联系
+  get '/signup', to: 'users#new'  #注册
 end
