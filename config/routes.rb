@@ -6,3 +6,4 @@ Rails.application.routes.draw do
   get '/contact', to: 'static_pages#contact'  #联系
   get '/signup', to: 'users#new'  #注册
 end
+# Ruby on Rails 192

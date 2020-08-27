@@ -5,5 +5,4 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get users_new_url
     assert_response :success
   end
-# Ruby on Rails 192
 end
