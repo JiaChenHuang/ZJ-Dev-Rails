@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+# gem 'debugger', '1.6.8'
 gem 'rails', '6.0.1'
 gem 'bcrypt', '3.1.13'
 gem 'puma', '3.12.2'

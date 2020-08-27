@@ -1,0 +1,23 @@
+   <%
+=begin%>
+   <% provide :title, "Show" %>
+   <p>姓名：<%= @user.name %></p>
+   <p>邮箱：<%= @user.email %></p>
+   <p>创建时间：<%= @user.created_at %></p>
+   <p>更新时间：<%= @user.updated_at %></p>
+   <%
+=end%>
+
+
+   <% provide(:title, @user.name) %>
+   <div class="row">
+       <aside class="col-md-4">
+           <section class="user_info">
+               <h1>
+                   <%= gravatar_for @user %>
+                   <%= @user.name %>
+               </h1>
+           </section>
+       </aside>
+
+   </div>
