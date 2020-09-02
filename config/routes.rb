@@ -10,4 +10,4 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'  #退出
   resources :users
 end
-# Ruby on Rails 285
+# Ruby on Rails 309

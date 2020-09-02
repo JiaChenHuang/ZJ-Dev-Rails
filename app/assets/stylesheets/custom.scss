@@ -150,6 +150,10 @@ select,
     // @include box_sizing;
 }
 
+form {
+    margin-bottom: 1.5rem;
+}
+
 input {
     height: auto !important;
 }
@@ -169,4 +173,20 @@ input {
     .form-control {
         color: $state-danger-text;
     }
+}
+
+.checkbox {
+    margin-top: -10px;
+    margin-bottom: 10px;
+
+    span {
+        margin-left: 20px;
+        font-weight: normal;
+        vertical-align: text-bottom;
+    }
+}
+
+#session_remember_me {
+    width: auto;
+    margin-left: 0;
 }
