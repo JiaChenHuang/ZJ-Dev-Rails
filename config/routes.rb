@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'  #登录页
   post '/login', to: 'sessions#create'  #登录
   delete '/logout', to: 'sessions#destroy'  #退出
-  
   resources :users
+  resources :account_activations, only:[:edit]
 end
 # Ruby on Rails 350
