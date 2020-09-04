@@ -1,0 +1,4 @@
+<h1>欢迎使用</h1>
+<p>Hi <%= @user.name %>,</p>
+<p>欢迎使用Ruby on Rails，单击下面链接激活您的账户：</p>
+<%= link_to "激活", edit_account_activation_url(@user.activation_token, email: @user.email) %>

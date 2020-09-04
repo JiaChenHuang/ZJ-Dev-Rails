@@ -14,8 +14,8 @@ class User < ApplicationRecord
   validates :password, presence: true, length: {minimum: 6}, allow_nil: true
 
 
-  
-  def self.digest(string)  # 返回指定字符串的哈希摘要
+  def self.digest(string)
+    # 返回指定字符串的哈希摘要
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
              BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
@@ -25,30 +25,34 @@ class User < ApplicationRecord
     SecureRandom.urlsafe_base64
   end
 
-def remember  # 为了持久保存会话，在数据库中记住用户
-  self.remember_token = User.new_token
-  update_attribute(:remember_digest, User.digest(remember_token))
+  def remember # 为了持久保存会话，在数据库中记住用户
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  
-def authenticated?(remember_token)  # 如果指定的令牌和摘要匹配，返回 true
-  return false if remember_digest.nil?
-  BCrypt::Password.new(remember_digest).is_password?(remember_token)
+
+  def authenticated?(remember_token)
+    # 如果指定的令牌和摘要匹配，返回 true
+    return false if remember_digest.nil?
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
-  def forget   # 忘记用户
+  def forget # 忘记用户
     update_attribute(:remember_digest, nil)
   end
 
   private
+
   # 把电子邮件地址转换成小写
   def downcase_email
-  self.email = email.downcase
+    self.email = email.downcase
   end
+
   # 创建并赋值激活令牌和摘要
   def create_activation_digest
-  self.activation_token = User.new_token
-  self.activation_digest = User.digest(activation_token)
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
   end
 end
+
 # end
