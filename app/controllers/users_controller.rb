@@ -4,8 +4,9 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: [:destroy]  # 让管理员才能删除其他普通用户
 
+
 def index
-    @users = User.paginate(page: params[:page])
+    @users = User.paginate(page: params[:page],per_page: 10)    #  设置每页显示条数
 end
 
   
