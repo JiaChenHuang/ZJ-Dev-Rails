@@ -1,14 +1,11 @@
 class UsersController < ApplicationController
-
-  before_action :logged_in_user, only: [:edit, :update, :index, :destroy] # 当用户未登录时禁止访问(用户编辑页、用户更新资料、用户详情页)
-  before_action :correct_user, only: [:edit, :update]
+  before_action :logged_in_user, only: %i[edit update index destroy] # 当用户未登录时禁止访问(用户编辑页、用户更新资料、用户详情页)
+  before_action :correct_user, only: %i[edit update]
   before_action :admin_user, only: [:destroy] # 让管理员才能删除其他普通用户
-
 
   def index
     @users = User.paginate(page: params[:page], per_page: 10) #  设置每页显示条数
   end
-
 
   def new # 注册
     @user = User.new
@@ -18,13 +15,27 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  # def create
+  #   @user = User.new(user_params)
+  #   if @user.save
+  #     # log_in @user
+  #     # flash[:success] = '欢迎登录#{@user.name}！' # 注册成功后第一次登录显示欢迎提示并显示当前用户名
+  #     # redirect_to @user
+  #     # UserMailer.account_activation(@user).deliver_now
+  #     @user.send_activation_email
+  #     flash[:info] = '请登录您的电子邮箱确认激活您的账户'
+  #     redirect_to root_url
+  #   else
+  #     render 'new'
+  #   end
+  # end
+
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user
-      # flash[:success] = "欢迎登录"
-      flash[:success] = "欢迎登录#{@user.name}！" # 注册成功后第一次登录显示欢迎提示并显示当前用户名
-      redirect_to @user
+      @user.send_activation_email
+      flash[:info] = '请登录您的电子邮箱确认激活您的账户'
+      redirect_to root_url
     else
       render 'new'
     end
@@ -37,20 +48,18 @@ class UsersController < ApplicationController
   def update # 更新用户
     @user = User.find(params[:id])
     if @user.update(user_params)
-      flash[:success] = "用户资料更新成功！"
+      flash[:success] = '用户资料更新成功！'
       redirect_to @user
     else
       render 'edit'
     end
   end
 
-
   def destroy # 删除用户
     User.find(params[:id]).destroy
-    flash[:danger] = "用户已删除！"
+    flash[:danger] = '用户已删除！'
     redirect_to users_url
   end
-
 
   private
 
@@ -62,7 +71,7 @@ class UsersController < ApplicationController
   def logged_in_user
     unless logged_in?
       store_location
-      flash[:danger] = "请登录！"
+      flash[:danger] = '请登录！'
       redirect_to login_url
     end
   end
@@ -75,12 +84,9 @@ class UsersController < ApplicationController
 
   #  确保是管理员
   def admin_user
-    redirect_to (root_url) unless current_user.admin?
+    redirect_toroot_url unless current_user.admin?
   end
 
   # 创建令牌和摘要
-  def create_activation_digest
-
-  end
-
+  def create_activation_digest; end
 end
