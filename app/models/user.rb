@@ -28,12 +28,17 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  def authenticated?(remember_token)
-    # 如果指定的令牌和摘要匹配，返回 true
-    return false if remember_digest.nil?
+  # def authenticated?(remember_token)
+  #   # 如果指定的令牌和摘要匹配，返回 true
+  #   return false if remember_digest.nil?
+  #   BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  # end
 
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
-  end
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
+    end
 
   # 忘记用户
   def forget
@@ -61,6 +66,11 @@ class User < ApplicationRecord
   # 发送密码重设邮件
   def send_password_reset_email
     UserMailer.password_reset(self).deliver_now
+  end
+
+# 如果密码重设请求超时了，返回 true
+def password_reset_expired?
+  reset_sent_at < 2.hours.ago   #密码重设邮件已经发出超过两小时
   end
 
   private
