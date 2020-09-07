@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :microposts, dependent: :destroy   # 一个用户可以拥有多篇微博
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save :downcase_email
   before_create :create_activation_digest
@@ -71,6 +72,11 @@ class User < ApplicationRecord
 # 如果密码重设请求超时了，返回 true
 def password_reset_expired?
   reset_sent_at < 2.hours.ago   #密码重设邮件已经发出超过两小时
+  end
+
+# 实现动态流原型
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 
   private

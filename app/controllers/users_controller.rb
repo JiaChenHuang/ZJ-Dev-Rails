@@ -13,22 +13,8 @@ class UsersController < ApplicationController
 
   def show # 显示
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page],per_page:10)
   end
-
-  # def create
-  #   @user = User.new(user_params)
-  #   if @user.save
-  #     # log_in @user
-  #     # flash[:success] = '欢迎登录#{@user.name}！' # 注册成功后第一次登录显示欢迎提示并显示当前用户名
-  #     # redirect_to @user
-  #     # UserMailer.account_activation(@user).deliver_now
-  #     @user.send_activation_email
-  #     flash[:info] = '请登录您的电子邮箱确认激活您的账户'
-  #     redirect_to root_url
-  #   else
-  #     render 'new'
-  #   end
-  # end
 
   def create
     @user = User.new(user_params)
@@ -68,13 +54,13 @@ class UsersController < ApplicationController
   end
 
   # 确保用户已经登录
-  def logged_in_user
-    unless logged_in?
-      store_location
-      flash[:danger] = '请登录！'
-      redirect_to login_url
-    end
-  end
+  # def logged_in_user
+  #   unless logged_in?
+  #     store_location
+  #     flash[:danger] = '请登录！'
+  #     redirect_to login_url
+  #   end
+  # end
 
   # 确保是正确的用户
   def correct_user

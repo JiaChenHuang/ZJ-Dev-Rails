@@ -20,5 +20,13 @@
                </h1>
            </section>
        </aside>
-
+       <div class="col-md-6">
+           <% if @user.microposts.any? %>
+           <h3>微博 (<%= @user.microposts.count %>)</h3>
+           <ol class="microposts">
+               <%= render @microposts %>
+           </ol>
+           <%= will_paginate @microposts ,:previous_label=> '上一页',:next_label=> '下一页' %>
+           <% end %>
+       </div>
    </div>

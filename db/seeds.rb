@@ -16,7 +16,7 @@ User.create!(name: "root",
     activated:true,
     activated_at:Time.zone.now)
 # 创建一堆普通用户
-49.times do |n|
+29.times do |n|
     name = Faker::Name.name
     email = "user-#{n+1}@gmail.com"
     password = "123123"
@@ -28,3 +28,9 @@ User.create!(name: "root",
     activated:true,
     activated_at:Time.zone.now)
     end
+    # 为部分用户生成微博
+    users = User.order(:created_at).take(6)
+    30.times do
+    content = Faker::Lorem.sentence(word_count: 5)
+    users.each { |user| user.microposts.create!(content: content) }
+end

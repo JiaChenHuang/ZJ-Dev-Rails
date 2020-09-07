@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy' # 退出
   resources :users
   resources :account_activations, only: [:edit] # 激活账户
-  resources :password_resets, only: %i[new create edit update] # 重置密码
+  resources :password_resets, only: [:new, :create, :edit, :update] # 重置密码
+  resources :microposts, only: [:create, :destroy]  # 用户微博
 end
 # Ruby on Rails 434
