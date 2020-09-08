@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy # 一个用户可以拥有多篇微博
-  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy   # 我关注的用户和关注我的用户
+  has_many :passive_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :followed
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save :downcase_email
   before_create :create_activation_digest
@@ -80,6 +83,20 @@ class User < ApplicationRecord
     Micropost.where("user_id = ?", id)
   end
 
+# 关注另一个用户
+def follow(other_user)
+  following << other_user
+  end
+
+  # 取消关注另一个用户
+  def unfollow(other_user)
+  following.delete(other_user)
+  end
+
+  # 如果当前用户关注了指定的用户，返回 true
+  def following?(other_user)
+  following.include?(other_user)
+  end
   private
 
   # 把电子邮件地址转换成小写
