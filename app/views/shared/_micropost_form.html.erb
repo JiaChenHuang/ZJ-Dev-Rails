@@ -4,4 +4,16 @@
     <%= f.text_area :content,placeholder: '来说些什么吧 . . .'%>
 </div>
 <%= f.submit "提交",class: "btn btn-primary"%>
+<!-- accept 可以限制上传文件类型、HTML 属性 -->
+<span class="image"><%= f.file_field :image, accept: "image/jpg, image/jpeg, image/png, image/svg, image/webp" %></span>
 <%end%>
+<script>
+    // 当用户还没上传文件时判断文件大小是否正确
+    $("#micropost_image").bind("change", function () {
+        var size_in_megabytes = this.files[0].size / 1024 / 1024;
+        if (size_in_megabytes > 10) {
+            alert("图片大小超过10M！");
+            $(this).val("");
+        }
+    })
+</script>

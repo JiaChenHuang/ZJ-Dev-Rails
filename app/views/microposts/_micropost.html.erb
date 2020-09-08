@@ -1,7 +1,11 @@
 <li id="micropost-<%= micropost.id %>">
     <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
     <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
-    <span class="content"><%= micropost.content %>
+    <span class="content">
+        <%= micropost.content %>
+        <!-- <%= image_tag micropost.image if micropost.image.attached? %> -->
+        <%= image_tag micropost.display_image if micropost.image.attached? %>
+
         <%if current_user?(micropost.user) %> <%#  判断当前用户是不是发布人自己%>
         <%= link_to "删除" ,micropost,method: :delete, data: { confirm: "确认删除吗？"}%>
         <%end%></span>
