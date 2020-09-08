@@ -5,8 +5,8 @@ class StaticPagesController < ApplicationController
   def home
     if logged_in?
       @micropost = current_user.microposts.build
-      @feed_items = current_user.feed.paginate(page: params[:page],per_page:10)
-      end
+      @feed_items = current_user.feed.paginate(page: params[:page], per_page: 10)
+    end
   end
 
   # 帮助
@@ -19,7 +19,7 @@ class StaticPagesController < ApplicationController
 
   # 联系
   def contact
-    
+
   end
-  
+
 end

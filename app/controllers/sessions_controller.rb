@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def new; end
 
-  def create  # 注册用户
+  def create # 注册用户
     user = User.find_by(email: params[:session][:email].downcase)
     if user&.authenticate(params[:session][:password])
       if user.activated?
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
     end
   end
 
-  def destroy   # 退出用户
+  def destroy # 退出用户
     log_out if logged_in?
     redirect_to root_url
   end

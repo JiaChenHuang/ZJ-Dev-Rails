@@ -1,9 +1,11 @@
 module SessionsHelper
-  def log_in(user)  # 登入指定的用户
+  def log_in(user)
+    # 登入指定的用户
     session[:user_id] = user.id
   end
 
-  def remember(user) # 在持久会话中记住用户
+  def remember(user)
+    # 在持久会话中记住用户
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token

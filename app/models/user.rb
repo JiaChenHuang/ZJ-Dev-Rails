@@ -1,14 +1,15 @@
 class User < ApplicationRecord
-  has_many :microposts, dependent: :destroy   # 一个用户可以拥有多篇微博
+  has_many :microposts, dependent: :destroy # 一个用户可以拥有多篇微博
+  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save :downcase_email
   before_create :create_activation_digest
   # before_save { email.downcase! }
-  validates :name, presence: true, length: { maximum: 50 }
+  validates :name, presence: true, length: {maximum: 50}
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze
-  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: true
+  validates :email, presence: true, length: {maximum: 255}, format: {with: VALID_EMAIL_REGEX}, uniqueness: true
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :password, presence: true, length: {minimum: 6}, allow_nil: true
 
   def self.digest(string)
     # 返回指定字符串的哈希摘要
@@ -39,7 +40,7 @@ class User < ApplicationRecord
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
-    end
+  end
 
   # 忘记用户
   def forget
@@ -69,12 +70,12 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
-# 如果密码重设请求超时了，返回 true
-def password_reset_expired?
-  reset_sent_at < 2.hours.ago   #密码重设邮件已经发出超过两小时
+  # 如果密码重设请求超时了，返回 true
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago #密码重设邮件已经发出超过两小时
   end
 
-# 实现动态流原型
+  # 实现动态流原型
   def feed
     Micropost.where("user_id = ?", id)
   end

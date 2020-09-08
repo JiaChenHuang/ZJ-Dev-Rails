@@ -21,18 +21,18 @@ class PasswordResetsController < ApplicationController
 
   def update
     if params[:user][:password].empty? # 第三种情况
-    @user.errors.add(:password, "不能为空")
-    render 'edit'
+      @user.errors.add(:password, "不能为空")
+      render 'edit'
     elsif @user.update(user_params) # 第四种情况
-    log_in @user
-    @user.update_attribute(:reset_digest,nil)
-    flash[:success] = "密码已重置"
-    redirect_to @user
+      log_in @user
+      @user.update_attribute(:reset_digest, nil)
+      flash[:success] = "密码已重置"
+      redirect_to @user
     else
-    render 'edit' # 第二种情况
+      render 'edit' # 第二种情况
     end
-    end
-    
+  end
+
   private
 
   def get_user
@@ -41,21 +41,21 @@ class PasswordResetsController < ApplicationController
 
   # 确保是有效用户
   def valid_user
-    unless (@user && @user.activated? &&@user.authenticated?(:reset, params[:id]))
+    unless (@user && @user.activated? && @user.authenticated?(:reset, params[:id]))
       redirect_to root_url
-      end
     end
+  end
 
-    def user_params
-      params.require(:user).permit(:password, :password_confirmation)
-      end
+  def user_params
+    params.require(:user).permit(:password, :password_confirmation)
+  end
 
-      # 检查重设令牌是否过期
-def check_expiration
-  if @user.password_reset_expired?
-    flash[:danger] = "密码重置已过期"
-    redirect_to new_password_reset_url
-end
-end
+  # 检查重设令牌是否过期
+  def check_expiration
+    if @user.password_reset_expired?
+      flash[:danger] = "密码重置已过期"
+      redirect_to new_password_reset_url
+    end
+  end
 
 end
