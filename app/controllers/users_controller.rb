@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: %i[edit update index destroy] # 当用户未登录时禁止访问(用户编辑页、用户更新资料、用户详情页)
   before_action :correct_user, only: %i[edit update]
   before_action :admin_user, only: [:destroy] # 让管理员才能删除其他普通用户
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy,:following, :followers]
 
   def index
     @users = User.paginate(page: params[:page], per_page: 10) #  设置每页显示条数
@@ -47,20 +48,27 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def following   # 我关注的人
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(page: params[:page],per_page: 10)
+    render 'show_follow'
+    end
+
+
+    def followers   #我的粉丝
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page],per_page: 10)
+    render 'show_follow'
+    end
+
+
   private
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
-
-  # 确保用户已经登录
-  # def logged_in_user
-  #   unless logged_in?
-  #     store_location
-  #     flash[:danger] = '请登录！'
-  #     redirect_to login_url
-  #   end
-  # end
 
   # 确保是正确的用户
   def correct_user

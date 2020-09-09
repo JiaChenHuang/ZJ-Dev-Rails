@@ -21,5 +21,6 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit] # 激活账户
   resources :password_resets, only: [:new, :create, :edit, :update] # 重置密码
   resources :microposts, only: [:create, :destroy]  # 用户微博
+  resources :relationships, only: [:create, :destroy]
 end
 # Ruby on Rails 434
